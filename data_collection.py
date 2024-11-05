@@ -6,7 +6,7 @@ import base64
 from urllib.parse import quote
 
 # 환경 변수에서 GitHub Personal Access Token 가져오기
-GITHUB_TOKEN = os.getenv('GITHUB_TOKEN')
+GITHUB_TOKEN = "my_key"
 if not GITHUB_TOKEN:
     raise Exception("GITHUB_TOKEN 환경 변수가 설정되어 있지 않습니다. Personal Access Token을 환경 변수로 설정해주세요.")
 
@@ -16,11 +16,12 @@ headers = {
     'Accept': 'application/vnd.github.v3+json',
 }
 
-# 검색할 키워드 목록
-keywords = ['machine learning', 'deep learning', 'artificial intelligence']
-
-# 수집할 레포지토리 수
-NUM_REPOS = 1000  # 원하는 레포지토리 수 설정
+# 키워드별로 수집할 레포지토리 수 설정
+keyword_repos = {
+    'machine learning': 350,
+    'deep learning': 350,
+    'AI': 300
+}
 
 # 결과를 저장할 리스트
 repositories = []
@@ -51,12 +52,16 @@ dependency_files = {
 search_url = 'https://api.github.com/search/repositories'
 
 # 각 키워드에 대해 검색 수행
-for keyword in keywords:
+for keyword, num_repos in keyword_repos.items():
     print(f"\n키워드 '{keyword}'로 레포지토리 검색 중...")
+    
+    # 해당 키워드로 수집한 레포지토리를 저장할 리스트
+    keyword_repositories = []
+    collected_ids = set(repo['id'] for repo in repositories)  # 중복 방지용 ID 집합
 
     # 페이지 번호 초기화
     page = 1
-    while len(repositories) < NUM_REPOS:
+    while len(keyword_repositories) < num_repos:
         params = {
             'q': f'{keyword} in:name,description,readme',
             'sort': 'stars',
@@ -93,6 +98,13 @@ for keyword in keywords:
             break
 
         for item in items:
+            if len(keyword_repositories) >= num_repos:
+                break  # 해당 키워드의 수집량에 도달하면 루프 종료
+
+            # 이미 수집된 레포지토리인지 확인하여 중복 방지
+            if item['id'] in collected_ids:
+                continue
+
             # 레포지토리 메타데이터 수집
             repo_data = {
                 'id': item['id'],
@@ -183,19 +195,17 @@ for keyword in keywords:
                 # 요청 간 딜레이 추가
                 time.sleep(0.5)
 
+            keyword_repositories.append(repo_data)
+            collected_ids.add(item['id'])
             repositories.append(repo_data)
 
-            if len(repositories) >= NUM_REPOS:
-                break
-
             # 요청 간 딜레이 추가 (Secondary Rate Limit 방지)
-            time.sleep(2)
+            time.sleep(0.5)
 
-        print(f"페이지 {page} 처리 완료, 총 수집된 레포지토리 수: {len(repositories)}")
+        print(f"키워드 '{keyword}' - 페이지 {page} 처리 완료, 수집된 레포지토리 수: {len(keyword_repositories)}")
         page += 1
 
-    if len(repositories) >= NUM_REPOS:
-        break
+print(f"\n총 수집된 레포지토리 수: {len(repositories)}")
 
 # 결과를 JSON 파일로 저장
 with open('repositories.json', 'w', encoding='utf-8') as f:
