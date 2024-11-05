@@ -6,7 +6,7 @@ import base64
 from urllib.parse import quote
 
 # 환경 변수에서 GitHub Personal Access Token 가져오기
-GITHUB_TOKEN = "my_key"
+GITHUB_TOKEN = "my_github_token"
 if not GITHUB_TOKEN:
     raise Exception("GITHUB_TOKEN 환경 변수가 설정되어 있지 않습니다. Personal Access Token을 환경 변수로 설정해주세요.")
 
