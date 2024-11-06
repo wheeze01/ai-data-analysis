@@ -51,13 +51,6 @@ df = pd.concat([df.drop(columns=['owner']), owner_df], axis=1)
 # 8. Topics 컬럼 처리
 df['topics_str'] = df['topics'].apply(lambda x: ','.join(x) if isinstance(x, list) else '')
 
-# 필요에 따라 One-Hot Encoding 적용
-# all_topics = df['topics'].explode().unique()
-# for topic in all_topics:
-#     if pd.isnull(topic):
-#         continue
-#     df[f'topic_{topic}'] = df['topics'].apply(lambda x: topic in x if isinstance(x, list) else False)
-
 # 9. Dependencies 컬럼 처리
 def extract_python_libraries(dependencies):
     libs = set()
