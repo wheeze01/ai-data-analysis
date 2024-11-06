@@ -1,0 +1,12 @@
+id: 레포지토리의 고유 식별자.
+name, full_name: 레포지토리의 이름과 전체 이름(owner/repo 형식).
+html_url: 레포지토리의 GitHub URL.
+description: 레포지토리의 설명.
+created_at, updated_at, pushed_at: 레포지토리의 생성, 업데이트, 마지막 푸시 날짜.
+stargazers_count, watchers_count, forks_count: 레포지토리의 스타, 와쳐, 포크 수.
+language: 레포지토리의 주요 프로그래밍 언어.
+topics: 레포지토리의 주제 태그 리스트.
+license: 레포지토리의 라이선스 정보.
+owner: 레포지토리 소유자의 정보(딕셔너리 형태).
+languages: 레포지토리에서 사용된 모든 언어와 사용량.
+dependencies: 의존성 파일과 그 내용.

@@ -28,8 +28,12 @@ for col in date_columns:
 df['description'] = df['description'].fillna('')
 df['language'] = df['language'].fillna('Unknown')
 df['license'] = df['license'].fillna('No License')
-df['topics'] = df['topics'].fillna([])
-df['dependencies'] = df['dependencies'].fillna({})
+
+# 수정된 부분: x가 리스트인지 확인하여 처리
+df['topics'] = df['topics'].apply(lambda x: x if isinstance(x, list) else [])
+df['dependencies'] = df['dependencies'].apply(lambda x: x if isinstance(x, dict) else {})
+
+# owner 컬럼의 결측치 처리
 df = df.dropna(subset=['owner'])
 
 # 6. 중복 데이터 제거
