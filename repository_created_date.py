@@ -11,12 +11,12 @@ df = pd.read_csv('repositories_preprocessed.csv')
 print("데이터 프레임의 첫 5개 행:")
 print(df.head())
 
-# 2. 'create_at' 컬럼의 데이터 타입 및 예시 확인
+# 2. 'created_at' 컬럼의 데이터 타입 및 예시 확인
 print("\n'created_at' 컬럼 데이터 타입:", df['created_at'].dtype)
 print("\n'created_at' 컬럼 샘플 데이터:")
 print(df['created_at'].head(10))
 
-# 3. 'create_at' 컬럼을 datetime 형식으로 변환
+# 3. 'created_at' 컬럼을 datetime 형식으로 변환
 df['created_at'] = pd.to_datetime(df['created_at'], errors='coerce')
 
 # 변환 후 데이터 확인
