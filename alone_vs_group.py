@@ -6,30 +6,13 @@ import matplotlib as mpl
 import os
 
 # 1. 한글 폰트 설정
-font_path = 'C:/Windows/Fonts/NanumGothic.ttf'  # Windows
-# font_path = '/Library/Fonts/NanumGothic.ttf'  # macOS
-# font_path = '/usr/share/fonts/truetype/nanum/NanumGothic.ttf'  # Linux
+font_path = 'C:/Windows/Fonts/NanumGothic.ttf'
 
 # 폰트 프로퍼티 생성
 font_prop = fm.FontProperties(fname=font_path)
 
 # matplotlib의 기본 폰트 설정
 plt.rcParams['font.family'] = font_prop.get_name()
-
-# 마이너스 기호 깨짐 방지
-plt.rcParams['axes.unicode_minus'] = False
-
-# 2. matplotlib 폰트 캐시 삭제
-cache_dir = mpl.get_cachedir()
-print("matplotlib 캐시 디렉토리:", cache_dir)
-
-font_cache_files = [f for f in os.listdir(cache_dir) if f.startswith('fontList')]
-for f in font_cache_files:
-    os.remove(os.path.join(cache_dir, f))
-
-print("matplotlib 폰트 캐시를 삭제했습니다.")
-
-# Python 세션을 재시작한 후 실행하세요.
 
 # 3. 데이터 로드
 df = pd.read_csv('repositories_preprocessed.csv')
